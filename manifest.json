@@ -1,9 +1,9 @@
 {
-  "name": "Mahmudul Howue Welfare Trust",
-  "short_name": "MHW Trust",
+  "name": "মাহমুদুল হক ওয়েলফেয়ার ট্রাস্ট",
+  "short_name": "ওয়েলফেয়ার ট্রাস্ট",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f3f6fa",
-  "theme_color": "#102a43",
+  "background_color": "#f3f6f4",
+  "theme_color": "#102b25",
   "lang": "bn"
 }
