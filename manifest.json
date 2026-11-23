@@ -1,0 +1,9 @@
+{
+  "name": "Mahmudul Howue Welfare Trust",
+  "short_name": "MHW Trust",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f3f6fa",
+  "theme_color": "#102a43",
+  "lang": "bn"
+}

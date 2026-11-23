@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#102a43"><title>Mahmudul Howue Welfare Trust</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--navy:#102a43;--blue:#176b87;--mint:#d9f5e8;--bg:#f3f6fa;--ink:#172b4d;--muted:#64748b;--line:#e2e8f0;--white:#fff;--red:#b42318;--gold:#a15c07}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Noto Sans Bengali",sans-serif;color:var(--ink)}
+header{background:linear-gradient(120deg,#102a43,#176b87);color:#fff;padding:18px 16px 22px}header h1{font-size:19px;margin:0 0 5px}header p{margin:0;font-size:12px;opacity:.85}
+main{max-width:980px;margin:auto;padding:14px}.tabs{display:flex;gap:7px;overflow:auto;margin:0 0 14px}.tab{border:0;background:#e5edf4;padding:10px 13px;border-radius:12px;white-space:nowrap;font-weight:650;color:#334155}.tab.active{background:var(--navy);color:#fff}
+.panel{display:none}.panel.active{display:block}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:12px;box-shadow:0 4px 16px #102a4309}
+h2{font-size:17px;margin:0 0 12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+label{font-size:12px;font-weight:650;color:#475569;display:block;margin:0 0 5px}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:10px;font:inherit;background:#fff;color:#172b4d}textarea{min-height:68px}
+button{border:0;border-radius:10px;padding:10px 13px;font-weight:700;background:var(--navy);color:white;cursor:pointer}button.secondary{background:#e8eef4;color:var(--navy)}button.danger{background:#fff0ef;color:var(--red)}button.good{background:#137a52}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+small,.muted{color:var(--muted);font-size:12px}.stat{font-size:25px;font-weight:800}.person{display:flex;gap:12px;align-items:center;border-top:1px solid var(--line);padding:11px 0}.person img{width:54px;height:54px;object-fit:cover;border-radius:12px;background:#e2e8f0}.person .info{flex:1;min-width:0}.person strong{display:block}.pill{display:inline-block;border-radius:99px;padding:4px 8px;background:#edf2f7;font-size:11px;font-weight:700}.ok{background:#dcfce7;color:#166534}.no{background:#fee2e2;color:#991b1b}.warn{background:#fef3c7;color:#92400e}.hidden{display:none!important}.checkrow{display:flex;align-items:center;gap:9px;padding:9px 0;border-top:1px solid var(--line)}.checkrow input{width:19px;height:19px}.checkrow .info{flex:1}.notice{background:#fff7df;border:1px solid #f4d58d;padding:11px;border-radius:12px;font-size:12px;line-height:1.5}.result{padding:12px;border-radius:12px;background:#f8fafc;border:1px solid var(--line);margin-top:10px}
+@media print{header,.tabs,.no-print{display:none!important}body{background:#fff}main{padding:0}.panel{display:none!important}#reports{display:block!important}.card{box-shadow:none;border:0}}
+</style></head>
+<body>
+<header><h1>Mahmudul Howue Welfare Trust</h1><p>অফলাইন উপকারভোগী ও সহায়তা বিতরণ ব্যবস্থাপনা</p></header>
+<main>
+<div class="notice no-print">এই সংস্করণে তথ্য এই ফোন/ব্রাউজারের IndexedDB-তে থাকে। একই Wi‑Fi/হটস্পট ছাড়া অন্য ফোনের সঙ্গে তথ্য স্বয়ংক্রিয়ভাবে মিলবে না। স্থানীয় ব্যাকআপ ও JSON Export/Import রাখা হয়েছে।</div>
+<nav class="tabs no-print">
+<button class="tab active" data-tab="home">ড্যাশবোর্ড</button><button class="tab" data-tab="people">উপকারভোগী</button><button class="tab" data-tab="activities">কার্যক্রম</button><button class="tab" data-tab="scan">স্ক্যান/যাচাই</button><button class="tab" data-tab="reports">রিপোর্ট</button><button class="tab" data-tab="settings">ব্যাকআপ</button>
+</nav>
+<section id="home" class="panel active">
+<div class="grid">
+<div class="card"><small>মোট উপকারভোগী</small><div class="stat" id="sPeople">0</div></div>
+<div class="card"><small>কার্যক্রম</small><div class="stat" id="sActs">0</div></div>
+<div class="card"><small>মোট বিতরণ</small><div class="stat" id="sGiven">0</div></div>
+<div class="card"><small>সর্বশেষ স্থানীয় ব্যাকআপ</small><div class="stat" style="font-size:15px" id="sBackup">তৈরি হয়নি</div></div>
+</div>
+<div class="card"><h2>দ্রুত কাজ</h2><div class="actions"><button onclick="tab('people')">+ উপকারভোগী যোগ</button><button onclick="tab('activities')">+ নতুন কার্যক্রম</button><button onclick="tab('scan')">QR/ID যাচাই</button><button class="secondary" onclick="makeBackup()">এখনই ব্যাকআপ</button></div></div>
+</section>
+<section id="people" class="panel">
+<div class="card"><h2>নতুন উপকারভোগী যোগ করুন</h2>
+<form id="personForm"><div class="grid">
+<div><label>পূর্ণ নাম *</label><input name="name" required></div><div><label>পিতা/স্বামীর নাম</label><input name="guardian"></div>
+<div><label>গ্রাম</label><input name="village"></div><div><label>ঠিকানা</label><input name="address"></div>
+<div><label>পরিচিতির সূত্র (যেমন: অমুকের বাবা)</label><input name="relation"></div><div><label>পরিবারের সদস্য সংখ্যা</label><input name="family" type="number" min="1"></div>
+<div><label>NID নম্বর</label><input name="nid"></div><div><label>ছবি</label><input name="photo" type="file" accept="image/*"></div>
+<div><label>NID ছবির কপি</label><input name="nidImage" type="file" accept="image/*"></div>
+</div><div class="actions"><button type="submit">তথ্য সংরক্ষণ</button></div></form></div>
+<div class="card"><h2>উপকারভোগীর তালিকা</h2><input id="peopleSearch" placeholder="নাম, সিরিয়াল, গ্রাম বা ID দিয়ে খুঁজুন"><div id="peopleList"></div></div>
+</section>
+<section id="activities" class="panel">
+<div class="card"><h2>নতুন সহায়তা কার্যক্রম</h2><form id="activityForm"><div class="grid"><div><label>কার্যক্রমের নাম *</label><input name="name" placeholder="যেমন: ২০২৬ শীতকালীন কম্বল" required></div><div><label>তারিখ</label><input name="date" type="date"></div></div><div class="actions"><button>কার্যক্রম তৈরি</button></div></form></div>
+<div class="card"><h2>কার্যক্রম নির্বাচন ও উপকারভোগী বাছাই</h2><label>কার্যক্রম</label><select id="activitySelect"></select><input id="selectSearch" placeholder="নাম/গ্রাম দিয়ে খুঁজুন"><div class="actions"><button class="secondary" onclick="selectVisible(true)">দেখানো সবাইকে টিক</button><button class="secondary" onclick="selectVisible(false)">টিক তুলে দিন</button><button onclick="saveSelection()">নির্বাচন সংরক্ষণ</button><button class="secondary" onclick="printSelection()">নির্বাচিত তালিকা প্রিন্ট/PDF</button></div><div id="selectList"></div></div>
+<div class="card"><h2>কার্যক্রমসমূহ</h2><div id="activityList"></div></div>
+</section>
+<section id="scan" class="panel">
+<div class="card"><h2>QR / ID দিয়ে উপকারভোগী যাচাই</h2><label>স্থায়ী Beneficiary ID লিখুন</label><input id="scanId" placeholder="যেমন: MHW-00001"><div class="actions"><button onclick="verify()">যাচাই করুন</button><button class="secondary" onclick="startCamera()">ক্যামেরা চালু</button><button class="secondary" onclick="stopCamera()">ক্যামেরা বন্ধ</button></div><video id="video" class="hidden" style="width:100%;max-height:260px;margin-top:12px;border-radius:12px" playsinline></video><div id="scanResult"></div></div>
+</section>
+<section id="reports" class="panel">
+<div class="card"><h2>বিতরণ রিপোর্ট</h2><label>কার্যক্রম</label><select id="reportActivity"></select><div class="grid"><div><small>নির্বাচিত</small><div class="stat" id="rSelected">0</div></div><div><small>বিতরণ সম্পন্ন</small><div class="stat" id="rGiven">0</div></div><div><small>বাকি</small><div class="stat" id="rPending">0</div></div></div><div class="actions"><button onclick="printReport()">রিপোর্ট প্রিন্ট / PDF</button><button class="secondary" onclick="exportCSV()">CSV ডাউনলোড</button></div><div id="reportList"></div></div>
+</section>
+<section id="settings" class="panel">
+<div class="card"><h2>স্থানীয় ব্যাকআপ</h2><p class="muted">অ্যাপ ব্যবহারের সময় নির্দিষ্ট বিরতিতে একই ডিভাইসে IndexedDB snapshot রাখা হয়। ব্রাউজারের ডেটা মুছে গেলে বা ফোন নষ্ট হলে এই স্থানীয় কপি যথেষ্ট নাও হতে পারে। তাই আলাদা ফাইলে Export করে নিরাপদ স্থানে রাখুন।</p><div class="actions"><button onclick="makeBackup()">এখনই স্থানীয় ব্যাকআপ</button><button onclick="exportJSON()">সম্পূর্ণ ডেটা Export</button><label class="secondary" style="padding:10px 13px;border-radius:10px;cursor:pointer">Backup Import <input id="importFile" type="file" accept="application/json" style="display:none"></label></div><div id="backupInfo" class="result"></div></div>
+<div class="card"><h2>ডেটা সুরক্ষা</h2><div class="notice">NID ও ব্যক্তিগত ছবির তথ্য সংবেদনশীল। এই ডেমো সংস্করণে ডিভাইসের ব্রাউজার ডেটা সুরক্ষিত রাখার সীমাবদ্ধতা আছে। বাস্তব ব্যবহারের আগে ডিভাইস লক, এনক্রিপ্টেড ব্যাকআপ এবং অ্যাডমিন লগইন যোগ করা প্রয়োজন।</div></div>
+</section>
+</main>
+<script>
+const DB='mhw-trust-db', VERSION=1; let db, cameraStream=null, scanTimer=null;
+const $=id=>document.getElementById(id);
+function openDB(){return new Promise((res,rej)=>{let r=indexedDB.open(DB,VERSION);r.onupgradeneeded=()=>{let d=r.result;['people','activities','records','backups'].forEach(s=>{if(!d.objectStoreNames.contains(s))d.createObjectStore(s,{keyPath:'id'})})};r.onsuccess=()=>{db=r.result;res()};r.onerror=()=>rej(r.error)})}
+function all(store){return new Promise((res,rej)=>{let r=db.transaction(store).objectStore(store).getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function put(store,obj){return new Promise((res,rej)=>{let t=db.transaction(store,'readwrite');t.objectStore(store).put(obj);t.oncomplete=()=>res();t.onerror=()=>rej(t.error)})}
+function del(store,id){return new Promise((res,rej)=>{let t=db.transaction(store,'readwrite');t.objectStore(store).delete(id);t.oncomplete=res;t.onerror=()=>rej(t.error)})}
+function uid(prefix){return prefix+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,7)}
+function tab(id){document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));refresh()}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+async function refresh(){let p=await all('people'),a=await all('activities'),r=await all('records');$('sPeople').textContent=p.length;$('sActs').textContent=a.length;$('sGiven').textContent=r.length;renderPeople(p);renderActivities(a);fillActivitySelects(a);renderSelection();renderReport()}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function img(p){return p.photo||''}
+$('personForm').onsubmit=async e=>{e.preventDefault();let f=e.target,fd=new FormData(f),photoFile=fd.get('photo'),nidFile=fd.get('nidImage');let photo=photoFile.size?await fileData(photoFile):'',nidImage=nidFile.size?await fileData(nidFile):'';let n=(await all('people')).length+1;let person={id:'MHW-'+String(n).padStart(5,'0'),name:fd.get('name'),guardian:fd.get('guardian'),village:fd.get('village'),address:fd.get('address'),relation:fd.get('relation'),family:fd.get('family'),nid:fd.get('nid'),photo,nidImage,created:new Date().toISOString()};await put('people',person);f.reset();await refresh();alert('তথ্য সংরক্ষণ হয়েছে: '+person.id)};
+function fileData(f){return new Promise(r=>{let x=new FileReader();x.onload=()=>r(x.result);x.readAsDataURL(f)})}
+async function renderPeople(list){if(!list)list=await all('people');let q=($('peopleSearch').value||'').toLowerCase();$('peopleList').innerHTML=list.filter(p=>([p.id,p.name,p.guardian,p.village,p.address].join(' ').toLowerCase().includes(q))).map(p=>`<div class="person"><img src="${img(p)}" onerror="this.style.visibility='hidden'"><div class="info"><strong>${esc(p.name)} <span class="pill">${esc(p.id)}</span></strong><small>${esc(p.guardian)} · ${esc(p.village)} · ${esc(p.relation)}</small><br><small>পরিবার: ${esc(p.family||'—')} · NID: ${esc(p.nid||'—')}</small></div><button class="secondary" onclick="showPerson('${p.id}')">বিস্তারিত</button></div>`).join('')||'<p class="muted">কোনো তথ্য পাওয়া যায়নি।</p>'}
+$('peopleSearch').oninput=()=>renderPeople();
+async function showPerson(id){let p=(await all('people')).find(x=>x.id===id);alert(`ID: ${p.id}\\nনাম: ${p.name}\\nপিতা/স্বামী: ${p.guardian}\\nগ্রাম: ${p.village}\\nঠিকানা: ${p.address}\\nপরিচিতির সূত্র: ${p.relation}\\nপরিবার: ${p.family}\\nNID: ${p.nid}`)}
+$('activityForm').onsubmit=async e=>{e.preventDefault();let f=new FormData(e.target);await put('activities',{id:uid('ACT'),name:f.get('name'),date:f.get('date'),selected:[],created:new Date().toISOString()});e.target.reset();refresh()};
+async function fillActivitySelects(a){let opts=a.map(x=>`<option value="${x.id}">${esc(x.name)} ${esc(x.date||'')}</option>`).join('');$('activitySelect').innerHTML=opts;$('reportActivity').innerHTML=opts}
+async function renderActivities(a){if(!a)a=await all('activities');$('activityList').innerHTML=a.map(x=>`<div class="person"><div class="info"><strong>${esc(x.name)}</strong><small>${esc(x.date||'তারিখ নেই')} · নির্বাচিত ${x.selected.length} জন</small></div><button class="secondary" onclick="chooseActivity('${x.id}')">তালিকা</button></div>`).join('')||'<p class="muted">এখনো কোনো কার্যক্রম নেই।</p>'}
+function chooseActivity(id){$('activitySelect').value=id;renderSelection()}
+async function renderSelection(){let a=(await all('activities')).find(x=>x.id===$('activitySelect').value),p=await all('people');if(!a){$('selectList').innerHTML='';return}let q=($('selectSearch').value||'').toLowerCase();$('selectList').innerHTML=p.filter(x=>(x.name+' '+x.village+' '+x.id).toLowerCase().includes(q)).map(x=>`<label class="checkrow"><input type="checkbox" data-person="${x.id}" ${a.selected.includes(x.id)?'checked':''}><div class="info"><strong>${esc(x.name)}</strong><small>${esc(x.id)} · ${esc(x.village)} · ${esc(x.relation)}</small></div></label>`).join('')||'<p class="muted">কেউ নেই।</p>'}
+$('activitySelect').onchange=renderSelection;$('selectSearch').oninput=renderSelection;
+function selectVisible(v){document.querySelectorAll('[data-person]').forEach(c=>c.checked=v)}
+async function saveSelection(){let a=(await all('activities')).find(x=>x.id===$('activitySelect').value);if(!a)return;let ids=[...document.querySelectorAll('[data-person]:checked')].map(x=>x.dataset.person);a.selected=ids;await put('activities',a);refresh();alert('নির্বাচন সংরক্ষণ হয়েছে')}
+async function printSelection(){let a=(await all('activities')).find(x=>x.id===$('activitySelect').value);if(!a)return;let p=await all('people');printHTML(a.name,p.filter(x=>a.selected.includes(x.id)),'নির্বাচিত উপকারভোগীর তালিকা')}
+async function verify(){let id=$('scanId').value.trim().toUpperCase(),p=(await all('people')).find(x=>x.id.toUpperCase()===id);if(!p){$('scanResult').innerHTML='<div class="result no">এই ID পাওয়া যায়নি।</div>';return}let a=(await all('activities')).find(x=>x.id===$('activitySelect').value)||null; // activity dropdown belongs to admin tab; scan uses selected current activity
+if(!a){let acts=await all('activities');a=acts[0]||null}
+let html=`<div class="result"><div class="person"><img src="${img(p)}"><div class="info"><strong>${esc(p.name)}</strong><small>${esc(p.id)} · ${esc(p.village)} · ${esc(p.address)}</small><small>পরিচিতির সূত্র: ${esc(p.relation)} · পিতা/স্বামী: ${esc(p.guardian)}</small></div></div>`;
+if(a){let got=(await all('records')).some(r=>r.activityId===a.id&&r.personId===p.id),eligible=a.selected.includes(p.id);html+=`<b>${esc(a.name)}</b><p>${got?'<span class="pill ok">ইতোমধ্যে পেয়েছেন</span>':eligible?'<span class="pill ok">এবার যোগ্য</span>':'<span class="pill warn">এবার যোগ্য হিসেবে নির্বাচিত হননি</span>'}</p>${eligible&&!got?`<button class="good" onclick="confirmGiven('${a.id}','${p.id}')">বিতরণ নিশ্চিত করুন</button>`:''}`}else html+='<p class="muted">কোনো কার্যক্রম তৈরি হয়নি।</p>';html+='</div>';$('scanResult').innerHTML=html}
+async function confirmGiven(aid,pid){if(!confirm('এই ব্যক্তির বিতরণ নিশ্চিত করবেন?'))return;let rec={id:uid('REC'),activityId:aid,personId:pid,date:new Date().toISOString()};let old=(await all('records')).some(r=>r.activityId===aid&&r.personId===pid);if(old){alert('আগেই বিতরণ হয়েছে');return}await put('records',rec);verify();refresh()}
+async function startCamera(){if(!('BarcodeDetector'in window)){alert('এই ব্রাউজারে QR ক্যামেরা স্ক্যান সমর্থিত নয়। ID লিখে যাচাই করুন।');return}try{cameraStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});$('video').srcObject=cameraStream;$('video').classList.remove('hidden');await $('video').play();let detector=new BarcodeDetector({formats:['qr_code']});scanTimer=setInterval(async()=>{try{let codes=await detector.detect($('video'));if(codes.length){$('scanId').value=codes[0].rawValue;verify()}}catch(e){}},700)}catch(e){alert('ক্যামেরা চালু করা যায়নি। HTTPS বা localhost প্রয়োজন হতে পারে।')}}
+function stopCamera(){if(scanTimer)clearInterval(scanTimer);if(cameraStream)cameraStream.getTracks().forEach(t=>t.stop());cameraStream=null;$('video').classList.add('hidden')}
+async function renderReport(){let aid=$('reportActivity').value,a=(await all('activities')).find(x=>x.id===aid);if(!a){$('reportList').innerHTML='';$('rSelected').textContent=$('rGiven').textContent=$('rPending').textContent='0';return}let p=await all('people'),r=await all('records'),given=r.filter(x=>x.activityId===aid),selected=p.filter(x=>a.selected.includes(x.id));$('rSelected').textContent=selected.length;$('rGiven').textContent=given.length;$('rPending').textContent=selected.length-given.length;$('reportList').innerHTML=selected.map(x=>{let got=given.some(g=>g.personId===x.id);return `<div class="person"><div class="info"><strong>${esc(x.name)}</strong><small>${esc(x.id)} · ${esc(x.village)}</small></div><span class="pill ${got?'ok':'warn'}">${got?'পেয়েছেন':'বাকি'}</span></div>`}).join('')}
+$('reportActivity').onchange=renderReport;
+async function printReport(){let aid=$('reportActivity').value,a=(await all('activities')).find(x=>x.id===aid);if(!a)return;let p=await all('people'),r=await all('records');let rows=p.filter(x=>a.selected.includes(x.id)).map(x=>({...x,status:r.some(z=>z.activityId===aid&&z.personId===x.id)?'পেয়েছেন':'বাকি'}));printHTML(a.name,rows,'বিতরণ রিপোর্ট')}
+function printHTML(title,rows,subtitle){let w=window.open('','_blank');if(!w){alert('পপ-আপ অনুমতি দিন');return}w.document.write(`<html lang="bn"><meta charset="utf-8"><title>${esc(title)}</title><style>body{font-family:Arial,sans-serif;padding:20px}h2{text-align:center}table{width:100%;border-collapse:collapse;font-size:12px}td,th{border:1px solid #999;padding:6px;text-align:left}img{width:42px;height:42px;object-fit:cover}</style><h2>Mahmudul Howue Welfare Trust</h2><h3>${esc(title)} — ${esc(subtitle)}</h3><table><tr><th>ক্রম</th><th>ছবি</th><th>ID</th><th>নাম</th><th>পিতা/স্বামী</th><th>গ্রাম/ঠিকানা</th><th>পরিচিতির সূত্র</th><th>পরিবার</th><th>অবস্থা</th></tr>${rows.map((p,i)=>`<tr><td>${i+1}</td><td>${p.photo?`<img src="${p.photo}">`:''}</td><td>${esc(p.id)}</td><td>${esc(p.name)}</td><td>${esc(p.guardian)}</td><td>${esc(p.village)} ${esc(p.address)}</td><td>${esc(p.relation)}</td><td>${esc(p.family)}</td><td>${esc(p.status||'')}</td></tr>`).join('')}</table><script>window.onload=()=>window.print()<\/script></html>`);w.document.close()}
+async function makeBackup(){let data={version:1,created:new Date().toISOString(),people:await all('people'),activities:await all('activities'),records:await all('records')};await put('backups',{id:'latest',data,created:data.created});$('sBackup').textContent=new Date().toLocaleString('bn-BD');$('backupInfo').textContent='স্থানীয় ব্যাকআপ তৈরি হয়েছে: '+new Date().toLocaleString('bn-BD')}
+async function exportJSON(){let data={version:1,created:new Date().toISOString(),people:await all('people'),activities:await all('activities'),records:await all('records')};download('mhw-trust-backup-'+Date.now()+'.json',JSON.stringify(data),'application/json')}
+function download(name,content,type){let a=document.createElement('a'),u=URL.createObjectURL(new Blob([content],{type}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!d.people||!d.activities||!d.records)throw 0;if(!confirm('বর্তমান তথ্যের সঙ্গে ব্যাকআপের তথ্য যোগ হবে। চালাবেন?'))return;for(let x of d.people)await put('people',x);for(let x of d.activities)await put('activities',x);for(let x of d.records)await put('records',x);await refresh();alert('ব্যাকআপ Import হয়েছে')}catch(err){alert('ব্যাকআপ ফাইলটি সঠিক নয়')}e.target.value=''};
+async function exportCSV(){let aid=$('reportActivity').value,a=(await all('activities')).find(x=>x.id===aid),p=await all('people');if(!a)return;let rows=p.filter(x=>a.selected.includes(x.id));let csv=['ID,Name,Guardian,Village,Address,Relation,Family',...rows.map(x=>[x.id,x.name,x.guardian,x.village,x.address,x.relation,x.family].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(','))].join('\\n');download('distribution-list.csv','\\ufeff'+csv,'text/csv')}
+async function autoBackup(){await makeBackup();setInterval(makeBackup,5*60*1000)}
+(async()=>{await openDB();let b=(await all('backups')).find(x=>x.id==='latest');if(b)$('sBackup').textContent=new Date(b.created).toLocaleString('bn-BD');await refresh();autoBackup()})().catch(e=>alert('ডেটাবেস চালু করা যায়নি: '+e));
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script></body></html>
